@@ -12,9 +12,12 @@
 
 const {Database} = require('gateway-addon');
 const manifest = require('./manifest.json');
-const SerialPort = require('serialport');
-
+//const { autoDetect } = require('@serialport/bindings-cpp')
+const { SerialPort } = require('serialport')
+//import { SerialPort } from 'serialport'
+//const SerialPort = require('serialport');
 function isZWavePort(port) {
+    console.log("checking port: ", port);
   /**
    * The popular HUSBZB-1 adapter contains ZWave AND Zigbee radios. With the
    * most recent drivers from SiLabs, the radios are likely to enumerate in the
@@ -27,7 +30,17 @@ function isZWavePort(port) {
    * Zigbee radio to be returned as the ZWave radio. We need to scrutinize the
    * path of the radio to ensure that we're returning the actual ZWave one.
    */
+    
+    // Skip Zigbee sticks
+    if(port.pnpId.indexOf('igbee') != -1 && port.pnpId.indexOf('wave') == -1){
+        return false;
+    }
+    if(port.pnpId.indexOf('onbee') != -1 && port.pnpId.indexOf('wave') == -1){
+        return false;
+    }
+    
   const isHUSBZB1 = port.vendorId == '10c4' && port.productId == '8a2a';
+  
   if (isHUSBZB1) {
     const isGoControl = port.path.indexOf('GoControl') >= 0;
     if (isGoControl) {
@@ -45,15 +58,18 @@ function isZWavePort(port) {
      * other with these names, and since this configuration was previously
      * valid below, return true.
      */
+    console.log("Detected husbzb1");
     return true;
   }
+  
+  const relevant_manufacturer = (port.vendorId == '0658' && port.productId == '0200') ||  // Aeotec Z-Stick Gen-5
+          (port.vendorId == '0658' && port.productId == '0280') ||  // UZB1
+          (port.vendorId == '0658' && port.productId == '0200') ||  // UZB1
+          (port.vendorId == '10c4' && port.productId == 'ea60')     // Aeotec Z-Stick S2. THIS HAS THE SAME COMBINATION AS usb-ITead_Sonoff_Zigbee_3.0_USB_Dongle_Plus
+  
+  //console.log("relevant_manufacturer: ", relevant_manufacturer);
 
-  return ((port.vendorId == '0658' &&
-           port.productId == '0200') ||  // Aeotec Z-Stick Gen-5
-          (port.vendorId == '0658' &&
-           port.productId == '0280') ||  // UZB1
-          (port.vendorId == '10c4' &&
-           port.productId == 'ea60'));   // Aeotec Z-Stick S2
+  return relevant_manufacturer;  
 }
 
 // Scan the serial ports looking for an OpenZWave adapter.
@@ -64,7 +80,10 @@ function isZWavePort(port) {
 //        Upon failure, callback is invoked as callback(err) instead.
 //
 function findZWavePort(callback) {
+  
+    console.log("SerialPort: ", SerialPort);
   SerialPort.list().then((ports) => {
+      
     for (const port of ports) {
       // Under OSX, SerialPort.list returns the /dev/tty.usbXXX instead
       // /dev/cu.usbXXX. tty.usbXXX requires DCD to be asserted which
@@ -73,9 +92,9 @@ function findZWavePort(callback) {
       if (port.path.startsWith('/dev/tty.usb')) {
         port.path = port.path.replace('/dev/tty', '/dev/cu');
       }
-
       if (isZWavePort(port)) {
         callback(null, port);
+        
         return;
       }
     }
@@ -120,20 +139,24 @@ async function loadZWaveAdapters(addonManager, _, errorCallback) {
     errorCallback(manifest.id, `Failed to load openzwave-shared: ${err}`);
     return;
   }
+  
+  //console.log("waiting 2.5 seconds before doing Zwave port scan");
+  setTimeout(() => {
+      findZWavePort(function(error, port) {
+        if (error) {
+          errorCallback(manifest.id, 'Unable to find ZWave adapter');
+          return;
+        }
 
-  findZWavePort(function(error, port) {
-    if (error) {
-      errorCallback(manifest.id, 'Unable to find ZWave adapter');
-      return;
-    }
+        console.log('Found ZWave port @', port.path);
 
-    console.log('Found ZWave port @', port.path);
+        new ZWaveAdapter(addonManager, config, zwaveModule, port);
 
-    new ZWaveAdapter(addonManager, config, zwaveModule, port);
-
-    // The zwave adapter will be added when it's driverReady method is called.
-    // Prior to that we don't know what the homeID of the adapter is.
-  });
+        // The zwave adapter will be added when it's driverReady method is called.
+        // Prior to that we don't know what the homeID of the adapter is.
+      });
+  }, 2500);
+  
 }
 
 module.exports = loadZWaveAdapters;
