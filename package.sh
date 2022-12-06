@@ -51,7 +51,7 @@ export CXXFLAGS=-D_GLIBCXX_USE_CXX11_ABI=0
 OPEN_ZWAVE="open-zwave"
 OZW_BRANCH=moziot
 rm -rf ${OPEN_ZWAVE}
-git clone -b ${OZW_BRANCH} --single-branch --depth=1 https://github.com/WebThingsIO/open-zwave ${OPEN_ZWAVE}
+git clone -b ${OZW_BRANCH} --single-branch --depth=1 https://github.com/flatsiedatsie/open-zwave ${OPEN_ZWAVE}
 make -C ${OPEN_ZWAVE}
 sudo make -C ${OPEN_ZWAVE} install
 
