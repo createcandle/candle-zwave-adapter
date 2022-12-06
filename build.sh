@@ -53,7 +53,15 @@ function build_cross_compiled() {
   docker run --rm -t -v $PWD:/build webthingsio/toolchain-${ADDON_ARCH}-${LANGUAGE_NAME}-${LANGUAGE_VERSION} bash -c "cd /build; ADDON_ARCH=${ADDON_ARCH} ./package.sh"
 }
 
-case "${ADDON_ARCH}" in
+if [[ $LANGUAGE_VERSION -gt 14 ]]
+then
+  echo "The node version is greater than 14."
+  install_linux_cross_compiler
+  build_native
+  
+fi
+  echo "The node version is 14 or less."
+  case "${ADDON_ARCH}" in
   darwin-x64)
     install_osx_compiler
     build_native
@@ -78,4 +86,8 @@ case "${ADDON_ARCH}" in
     echo "Unsupported architecture"
     exit 1
     ;;
-esac
+  esac
+  
+if 
+
+
