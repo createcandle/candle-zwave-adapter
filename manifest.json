@@ -1,6 +1,6 @@
 {
-  "author": "WebThingsIO",
-  "description": "Z-Wave adapter plugin for WebThings Gateway",
+  "author": "WebThingsIO & CandleSmartHome.com",
+  "description": "Z-Wave adapter plugin",
   "gateway_specific_settings": {
     "webthings": {
       "exec": "{path}/zwave-loader.sh {nodeLoader} {path}",
@@ -10,7 +10,7 @@
       "enabled": true
     }
   },
-  "homepage_url": "https://github.com/WebThingsIO/zwave-adapter",
+  "homepage_url": "https://github.com/flatsiedatsie/zwave-adapter",
   "id": "zwave-adapter",
   "license": "MPL-2.0",
   "manifest_version": 1,
@@ -35,5 +35,5 @@
     }
   },
   "short_name": "Z-Wave",
-  "version": "0.10.9"
+  "version": "0.10.11"
 }
