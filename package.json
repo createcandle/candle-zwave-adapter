@@ -1,6 +1,6 @@
 {
   "name": "zwave-adapter",
-  "version": "0.10.13",
+  "version": "0.10.14",
   "description": "Z-Wave adapter plugin",
   "author": "WebThingsIO & CandleSmartHome.com",
   "main": "index.js",
