@@ -1,4 +1,3 @@
-# Zwave-adapter bijna goeie
 name: Release
 
 #on:
@@ -39,8 +38,6 @@ jobs:
         ]
         pair: [
           'node:12',
-          'node:16',
-          'node:18',
         ]
         include:
           - platform: 'linux-arm'
@@ -50,12 +47,6 @@ jobs:
           - pair: 'node:12'
             language: 'node'
             version: '12'
-          - pair: 'node:16'
-            language: 'node'
-            version: '16'
-          - pair: 'node:18'
-            language: 'node'
-            version: '18'
     runs-on: ${{ matrix.host-os }}
 
 
