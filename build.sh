@@ -59,7 +59,7 @@ then
   install_linux_cross_compiler
   build_native
   
-fi
+else
   echo "The node version is 14 or less."
   case "${ADDON_ARCH}" in
   darwin-x64)
@@ -88,6 +88,6 @@ fi
     ;;
   esac
   
-if 
+fi
 
 
