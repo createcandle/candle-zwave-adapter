@@ -72,13 +72,13 @@ class ZWaveNode extends Device {
     dict.zwInfo = this.zwInfo;
     dict.zwClasses = this.zwClasses;
     dict.zwValues = this.zwValues;
-
+    /*
     for (const prop of Object.values(dict.properties)) {
       if (!prop.visible) {
         delete dict.properties[prop.name];
       }
     }
-
+    */
     return dict;
   }
 
@@ -272,14 +272,14 @@ class ZWaveNode extends Device {
 
     const sceneProperty = this.sceneProperty[buttonNum];
     if (!sceneProperty) {
-      console.error('handleSlideEnd: node:', this.id,
+      DEBUG && console.error('handleSlideEnd: node:', this.id,
                     'no sceneProperty for button', buttonNum);
       return;
     }
 
     const levelProperty = sceneProperty.info.levelProperty;
     if (!levelProperty) {
-      console.error('handleSlideEnd: node:', this.id,
+      DEBUG && console.error('handleSlideEnd: node:', this.id,
                     'no levelProperty for button', buttonNum);
     }
     let newValue = levelProperty.value + slidePercent;
@@ -299,9 +299,9 @@ class ZWaveNode extends Device {
 
   notifyEvent(eventName, eventData) {
     if (eventData) {
-      console.log(this.name, 'event:', eventName, 'data:', eventData);
+      DEBUG && console.log(this.name, 'event:', eventName, 'data:', eventData);
     } else {
-      console.log(this.name, 'event:', eventName);
+      DEBUG && console.log(this.name, 'event:', eventName);
     }
     this.eventNotify(new Event(this, eventName, eventData));
   }
@@ -358,7 +358,7 @@ class ZWaveNode extends Device {
   }
 
   performAction(action) {
-    console.log(`node${this.zwInfo.nodeId}`,
+    DEBUG && console.log(`node${this.zwInfo.nodeId}`,
                 `Performing action '${action.name}'`);
 
     if (this.doorLockAction) {
@@ -370,7 +370,7 @@ class ZWaveNode extends Device {
 
       case 'lock': // Start locking the door
         if (this.doorLockState.value === 'locked') {
-          console.log('Door already locked - ignoring');
+          DEBUG && console.log('Door already locked - ignoring');
           action.finish();
           return Promise.resolve();
         }
@@ -381,7 +381,7 @@ class ZWaveNode extends Device {
 
       case 'unlock':  // Start unlocking the door
         if (this.doorLockState.value === 'unlocked') {
-          console.log('Door already unlocked - ignoring');
+          DEBUG && console.log('Door already unlocked - ignoring');
           action.finish();
           return Promise.resolve();
         }
@@ -413,7 +413,7 @@ class ZWaveNode extends Device {
   setPropertyValue(property, value) {
     property.setCachedValue(value);
     const units = property.units || '';
-    console.log('node%d setPropertyValue: %s = %s%s',
+    DEBUG && console.log('node%d setPropertyValue: %s = %s%s',
                 this.zwInfo.nodeId, property.name, value, units);
     this.notifyPropertyChanged(property);
   }
@@ -438,18 +438,18 @@ class ZWaveNode extends Device {
         propertyFound = true;
         const [value, logValue] = property.parseZwValue(zwValue.value);
         property.setCachedValue(value);
-        console.log('node%d valueAdded: %s:%s property: %s = %s%s',
+        DEBUG && console.log('node%d valueAdded: %s:%s property: %s = %s%s',
                     this.zwInfo.nodeId, zwValue.value_id, zwValue.label,
                     property.name, logValue, units);
         if (this.classified) {
           this.notifyPropertyChanged(property);
         } else {
-          console.log('node not classified');
+          DEBUG && console.log('node not classified');
         }
       }
     });
     if (!propertyFound && (zwValue.genre === 'user' || DEBUG)) {
-      console.log('node%d valueAdded: %s:%s = %s%s',
+      DEBUG && console.log('node%d valueAdded: %s:%s = %s%s',
                   this.zwInfo.nodeId, zwValue.value_id,
                   zwValue.label, zwValue.value, units);
     }
@@ -493,14 +493,14 @@ class ZWaveNode extends Device {
           [value, logValue] = property.parseZwValue(zwValue.value);
         }
         property.setCachedValue(value);
-        console.log('node%d valueChanged: %s:%s property: %s = %s%s',
+        DEBUG && console.log('node%d valueChanged: %s:%s property: %s = %s%s',
                     this.zwInfo.nodeId, zwValue.value_id, zwValue.label,
                     property.name, logValue, units);
         this.notifyPropertyChanged(property);
       }
     });
     if (!propertyFound) {
-      console.log('node%d valueChanged: %s:%s = %s%s (no property found)',
+      DEBUG && console.log('node%d valueChanged: %s:%s = %s%s (no property found)',
                   this.zwInfo.nodeId, zwValue.value_id,
                   zwValue.label, zwValue.value, units);
     }
@@ -523,18 +523,18 @@ class ZWaveNode extends Device {
           const [_value, logValue] = property.parseZwValue(zwValue.value);
           delete property.valueId;
           delete property.value;
-          console.log('node%d valueRemoved: %s:%s %s property: %s = %s%s',
+          DEBUG && console.log('node%d valueRemoved: %s:%s %s property: %s = %s%s',
                       this.zwInfo.nodeId, zwValue.value_id, zwValue.label,
                       property.name, logValue, units);
         }
       });
       if (!propertyFound) {
-        console.log('node%d valueRemoved: %s:%s = %s%s',
+        DEBUG && console.log('node%d valueRemoved: %s:%s = %s%s',
                     this.zwInfo.nodeId, zwValue.value_id,
                     zwValue.label, zwValue.value, units);
       }
     } else {
-      console.log('zwValueRemoved unknown valueId:', valueId);
+      DEBUG && console.log('zwValueRemoved unknown valueId:', valueId);
     }
   }
 }

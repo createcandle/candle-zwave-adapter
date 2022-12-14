@@ -35,7 +35,7 @@ function getDataPath(dataDir) {
   if (process.env.hasOwnProperty('MOZIOT_HOME')) {
     profileDir = process.env.MOZIOT_HOME;
   } else {
-    profileDir = path.join(os.homedir(), '.mozilla-iot');
+    profileDir = path.join(os.homedir(), '.webthings');
   }
 
   return path.join(profileDir, 'data', 'zwave-adapter');
@@ -50,7 +50,7 @@ function getLogPath(logDir) {
     return path.join(process.env.MOZIOT_HOME, 'log');
   }
 
-  return path.join(os.homedir(), '.mozilla-iot', 'log');
+  return path.join(os.homedir(), '.webthingst', 'log');
 }
 
 class ZWaveAdapter extends Adapter {

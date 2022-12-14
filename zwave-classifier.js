@@ -423,7 +423,7 @@ class ZWaveClassifier {
     const zwave = node.adapter.zwave;
     const nodeId = node.zwInfo.nodeId;
     DEBUG_classifier &&
-      console.log('classifyInternal:',
+      DEBUG && console.log('classifyInternal:',
                   `manufacturerId: ${node.zwInfo.manufacturerId}`,
                   `productId: ${node.zwInfo.productId}`);
     // Search through the known quirks and see if we need to apply any
@@ -434,7 +434,7 @@ class ZWaveClassifier {
       }
 
       if (quirk.hasOwnProperty('disablePoll')) {
-        console.log(`Device ${node.id}`,
+        DEBUG && console.log(`Device ${node.id}`,
                     `Setting disablePoll to ${quirk.disablePoll}`);
         node.disablePoll = quirk.disablePoll;
       }
@@ -461,14 +461,14 @@ class ZWaveClassifier {
               if (idx < 0) {
                 // This shouldn't happen. If it does it means that
                 // something in the config file has changed.
-                console.error(`Device ${node.id} config ` +
+                DEBUG && console.error(`Device ${node.id} config ` +
                               `paramId: ${setConfig.paramId} ` +
                               `unable to determine index of '${value}'`);
                 continue;
               }
               value = idx;
             }
-            console.log(`Setting device ${node.id} config ` +
+            DEBUG && console.log(`Setting device ${node.id} config ` +
                         `paramId: ${setConfig.paramId} ` +
                         `to value: ${setConfig.value} ` +
                         `size: ${setConfig.size}`);
@@ -477,12 +477,12 @@ class ZWaveClassifier {
                                  setConfig.value,
                                  setConfig.size);
           } else {
-            console.error(`Device ${node.id} config ` +
+            DEBUG && console.error(`Device ${node.id} config ` +
                           `paramId: ${setConfig.paramId} ` +
                           `unable to find value with id ${valueId}`);
           }
         } else {
-          console.error(`Device ${node.id} config ` +
+          DEBUG && console.error(`Device ${node.id} config ` +
                         `paramId: ${setConfig.paramId} ` +
                         `unable to find valueId`);
         }
@@ -1157,7 +1157,7 @@ class ZWaveClassifier {
         'on',                     // name
         {// property decscription
           '@type': 'OnOffProperty',
-          label: 'On/Off',
+          label: 'State',
           type: 'boolean',
           readOnly: true,
         },
@@ -1169,7 +1169,7 @@ class ZWaveClassifier {
       `on${buttonNum}`,         // name
       {// property decscription
         '@type': 'BooleanProperty',
-        label: `On/Off ${buttonNum}`,
+        label: `State ${buttonNum}`,
         type: 'boolean',
         readOnly: true,
       },
@@ -1338,7 +1338,7 @@ class ZWaveClassifier {
       'on',            // name
       {// property decscription
         '@type': 'OnOffProperty',
-        label: 'On/Off',
+        label: 'State',
         type: 'boolean',
       },
       levelValueId,             // valueId
@@ -1812,7 +1812,7 @@ class ZWaveClassifier {
   initSwitch(node, binarySwitchValueId, levelValueId, suffix) {
     node['@type'] = ['OnOffSwitch'];
 
-    console.log('binarySwitchValueId =', binarySwitchValueId,
+    DEBUG && console.log('binarySwitchValueId =', binarySwitchValueId,
                 'levelValueId =', levelValueId,
                 'suffix =', suffix);
     if (binarySwitchValueId) {
@@ -1821,7 +1821,7 @@ class ZWaveClassifier {
         `on${suffix}`,            // name
         {// property decscription
           '@type': suffix ? 'BooleanProperty' : 'OnOffProperty',
-          label: suffix ? `On/Off (${suffix})` : 'On/Off',
+          label: suffix ? `State (${suffix})` : 'State',
           type: 'boolean',
         },
         binarySwitchValueId       // valueId
@@ -1860,7 +1860,7 @@ class ZWaveClassifier {
         `on${suffix}`,            // name
         {// property decscription
           '@type': suffix ? 'BooleanProperty' : 'OnOffProperty',
-          label: suffix ? `On/Off (${suffix})` : 'On/Off',
+          label: suffix ? `State (${suffix})` : 'State',
           type: 'boolean',
         },
         levelValueId,             // valueId
