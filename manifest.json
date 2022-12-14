@@ -25,11 +25,13 @@
       "properties": {
         "networkKey": {
           "type": "string",
-          "description": "16-byte, comma-separated hex string (0xb4,0xc9,etc...)"
+          "description": "Advanced. You can manually set a security key. This should be a 16-byte, comma-separated hex string (0xb4,0xc9,etc...)"
         },
         "debug": {
           "type": "string",
-          "default": ""
+          "enum":["","classifier","node","flow","valueID"],
+          "description": "Advanced. You can get additional debugging information by selecting one of these aspects of the addon."
+          
         }
       }
     }
