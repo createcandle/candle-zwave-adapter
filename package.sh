@@ -12,7 +12,7 @@ if [ -z "${ADDON_ARCH}" ]; then
   case "${UNAME}" in
 
     Linux)
-      ADDON_ARCH=linux-x64
+      ADDON_ARCH=linux-arm
       ;;
 
     Darwin)
