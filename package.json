@@ -1,21 +1,21 @@
 {
-  "name": "zwave-adapter",
-  "version": "0.10.18",
-  "description": "Z-Wave adapter plugin",
+  "name": "candle-zwave-adapter",
+  "version": "0.11.0",
+  "description": "Connect to Z-wave devices",
   "author": "WebThingsIO & CandleSmartHome.com",
   "main": "index.js",
   "scripts": {
     "lint": "eslint .",
     "jest": "jest"
   },
-  "homepage": "https://github.com/flatsiedatsie/zwave-adapter",
+  "homepage": "https://github.com/createcandle/candle-zwave-adapter",
   "license": "MPL-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/flatsiedatsie/zwave-adapter.git"
+    "url": "https://github.com/fcreatecandle/candle-zwave-adapter.git"
   },
   "bugs": {
-    "url": "https://github.com/flatsiedatsie/zwave-adapter/issues"
+    "url": "https://github.com/createcandle/candle-zwave-adapter/issues"
   },
   "dependencies": {
     "color": "^3.1.3",
