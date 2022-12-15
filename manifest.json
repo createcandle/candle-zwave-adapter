@@ -1,6 +1,6 @@
 {
   "author": "WebThingsIO & CandleSmartHome.com",
-  "description": "Z-Wave adapter plugin",
+  "description": "Connect to Z-wave devices",
   "gateway_specific_settings": {
     "webthings": {
       "exec": "{path}/zwave-loader.sh {nodeLoader} {path}",
@@ -10,11 +10,11 @@
       "enabled": true
     }
   },
-  "homepage_url": "https://github.com/flatsiedatsie/zwave-adapter",
-  "id": "zwave-adapter",
+  "homepage_url": "https://github.com/createcandle/candle-zwave-adapter",
+  "id": "candle-zwave-adapter",
   "license": "MPL-2.0",
   "manifest_version": 1,
-  "name": "Z-Wave",
+  "name": "Candle Z-Wave",
   "options": {
     "default": {
       "networkKey": "",
@@ -36,6 +36,6 @@
       }
     }
   },
-  "short_name": "Z-Wave",
-  "version": "0.10.18"
+  "short_name": "Candle-ZWave",
+  "version": "0.11.0"
 }
