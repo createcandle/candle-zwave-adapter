@@ -28,7 +28,7 @@ if [ -z "${ADDON_ARCH}" ]; then
 else
   echo "ADDON_ARCH = ${ADDON_ARCH}"
 fi
-
+echo "ADDON_ARCH = ${ADDON_ARCH}"
 # For the Raspberry Pi, the version of node which was installed with the
 # 0.7.0 gateway clears LD_LIBRARY_PATH, which means that we need to use
 # a utility called patchelf. If we're building for the Pi, then verify
@@ -64,7 +64,7 @@ else
   NODE_VERSION="$(node --version)"
   TARFILE_SUFFIX="-${ADDON_ARCH}-${NODE_VERSION/\.*/}"
 fi
-
+echo "TARFILE_SUFFIX: $TARFILE_SUFFIX"
 npm install --production
 
 OZW_PKG="libopenzwave"
@@ -98,12 +98,13 @@ find node_modules \( -type f -o -type l \) -exec shasum --algorithm 256 {} \; >>
 find "${OZW_DIR}" -type f -exec shasum --algorithm 256 {} \; >> SHA256SUMS
 
 TARFILE=`npm pack`
-
+echo "TARFILE after npm pack: $TARFILE"
 tar xzf ${TARFILE}
 rm ${TARFILE}
 TARFILE_ARCH="${TARFILE/.tgz/${TARFILE_SUFFIX}.tgz}"
 cp -r node_modules ./package
 cp -r "${OZW_DIR}" ./package
+echo "TARFILE_ARCH: $TARFILE_ARCH"
 tar czf ${TARFILE_ARCH} package
 
 shasum --algorithm 256 ${TARFILE_ARCH} > ${TARFILE_ARCH}.sha256sum
