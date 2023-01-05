@@ -13,6 +13,9 @@ if [ -z "${ADDON_ARCH}" ]; then
 
     Linux)
       ADDON_ARCH=linux-arm
+      if [ $(getconf LONG_BIT) == 64 ]; then
+        ADDON_ARCH=linux-arm64
+      fi
       ;;
 
     Darwin)
@@ -24,10 +27,14 @@ if [ -z "${ADDON_ARCH}" ]; then
       exit 1
       ;;
   esac
+  
   echo "Faking ADDON_ARCH = ${ADDON_ARCH}"
 else
   echo "ADDON_ARCH = ${ADDON_ARCH}"
 fi
+
+
+
 echo "ADDON_ARCH = ${ADDON_ARCH}"
 # For the Raspberry Pi, the version of node which was installed with the
 # 0.7.0 gateway clears LD_LIBRARY_PATH, which means that we need to use
