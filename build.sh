@@ -54,33 +54,38 @@ function build_cross_compiled() {
 }
 
 
-case "${ADDON_ARCH}" in
-darwin-x64)
-  install_osx_compiler
+if [ "$ADDON_ARCH" == "linux-arm64" ]
+then
+  echo "The architecture is arm64, so assuming it's using the github arm64 runner"
   build_native
-  ;;
-
-linux-arm)
-  install_linux_cross_compiler
-  build_cross_compiled
-  ;;
-
-linux-arm64)
-  install_linux_cross_compiler
-  build_cross_compiled
-  ;;
-
-linux-x64)
-  install_linux_cross_compiler
-  build_cross_compiled
-  ;;
-
-*)
-  echo "Unsupported architecture"
-  exit 1
-  ;;
-esac
+else
+  case "${ADDON_ARCH}" in
+  darwin-x64)
+    install_osx_compiler
+    build_native
+    ;;
   
+  linux-arm)
+    install_linux_cross_compiler
+    build_cross_compiled
+    ;;
+  
+  linux-arm64)
+    install_linux_cross_compiler
+    build_cross_compiled
+    ;;
+  
+  linux-x64)
+    install_linux_cross_compiler
+    build_cross_compiled
+    ;;
+  
+  *)
+    echo "Unsupported architecture"
+    exit 1
+    ;;
+  esac
+fi
 
 
 
