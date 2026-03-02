@@ -22,7 +22,7 @@ jobs:
     - name: Dump upload url to file
       run: echo '${{ steps.get_release.outputs.upload_url }}' > upload_url
     - name: Upload upload_url
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: upload_url
         path: upload_url
@@ -38,6 +38,8 @@ jobs:
         ]
         pair: [
           'node:12',
+          'node:20',
+          'node:24',
         ]
         include:
           - platform: 'linux-arm'
@@ -47,12 +49,18 @@ jobs:
           - pair: 'node:12'
             language: 'node'
             version: '12'
+          - pair: 'node:20'
+            language: 'node'
+            version: '20'
+          - pair: 'node:24'
+            language: 'node'
+            version: '24'
     runs-on: ${{ matrix.host-os }}
 
 
     steps:
     - name: Download upload_url
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: upload_url
         path: upload_url
