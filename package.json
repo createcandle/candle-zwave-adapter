@@ -1,6 +1,6 @@
 {
   "name": "candle-zwave-adapter",
-  "version": "0.11.2",
+  "version": "0.11.3",
   "description": "Connect to Z-wave devices",
   "author": "WebThingsIO & CandleSmartHome.com",
   "main": "index.js",
